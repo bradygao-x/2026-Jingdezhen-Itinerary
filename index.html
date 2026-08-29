@@ -1,0 +1,817 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>景德镇周末</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f3ede4;
+    --surface: #fffaf4;
+    --surface-2: #f2e7d9;
+    --surface-3: #e6d8c9;
+    --text: #1b2730;
+    --muted: #5f6c75;
+    --line: #d8c8b8;
+    --accent: #2f607f;
+    --accent-2: #b05d41;
+    --accent-3: #58785f;
+    --good: #35694a;
+    --warn: #9a6b29;
+    --bad: #a14747;
+    --shadow: 0 16px 42px rgba(34, 48, 57, 0.08);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --content: 1180px;
+    --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+    --mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11171b;
+      --surface: #182228;
+      --surface-2: #202d34;
+      --surface-3: #2b3941;
+      --text: #eef3f6;
+      --muted: #9db0ba;
+      --line: #31434d;
+      --accent: #7fb7d0;
+      --accent-2: #dd9074;
+      --accent-3: #91bc8f;
+      --good: #8bc69a;
+      --warn: #e6bf73;
+      --bad: #e08b8b;
+      --shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #11171b;
+    --surface: #182228;
+    --surface-2: #202d34;
+    --surface-3: #2b3941;
+    --text: #eef3f6;
+    --muted: #9db0ba;
+    --line: #31434d;
+    --accent: #7fb7d0;
+    --accent-2: #dd9074;
+    --accent-3: #91bc8f;
+    --good: #8bc69a;
+    --warn: #e6bf73;
+    --bad: #e08b8b;
+    --shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  button, input, textarea { font: inherit; }
+  button {
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .page {
+    max-width: var(--content);
+    margin: 0 auto;
+    padding: 24px 18px 40px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    color: var(--accent-2);
+  }
+
+  h1, h2, h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 650;
+    line-height: 1.16;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(2rem, 3vw, 3.6rem); }
+  h2 { font-size: clamp(1.25rem, 1.7vw, 1.8rem); }
+  h3 { font-size: 1.02rem; font-family: var(--sans); }
+
+  .segmented, .chip-row, .day-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .segmented {
+    background: var(--surface-2);
+    padding: 6px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+  .segmented button, .chip, .pill, .tab {
+    border-radius: 999px;
+    padding: 9px 13px;
+    border: 1px solid transparent;
+    transition: background 140ms ease, transform 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+  .segmented button[aria-pressed="true"],
+  .tab[aria-selected="true"],
+  .chip.active {
+    background: rgba(47, 96, 127, 0.12);
+    border-color: rgba(47, 96, 127, 0.35);
+    color: var(--text);
+  }
+  .chip, .tab {
+    background: var(--surface-2);
+    border-color: var(--line);
+    color: var(--muted);
+    font-weight: 650;
+  }
+  .pill {
+    background: var(--surface-2);
+    border-color: var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .chip:hover, .tab:hover, .segmented button:hover { transform: translateY(-1px); }
+
+  .hero {
+    background: linear-gradient(145deg, rgba(47, 96, 127, 0.14), rgba(176, 93, 65, 0.08)), var(--surface);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap: 18px;
+    align-items: end;
+  }
+  .lede {
+    margin: 12px 0 0;
+    max-width: 66ch;
+    font-size: 1.02rem;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .stat {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 14px 15px;
+    min-height: 88px;
+  }
+  .stat .label, .mini-label {
+    display: block;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .stat strong {
+    display: block;
+    font-size: 1.02rem;
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+  }
+  .status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 4px rgba(56, 105, 74, 0.12);
+    flex: 0 0 auto;
+  }
+
+  .section {
+    margin-top: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: clip;
+  }
+  .section-head {
+    padding: 20px 22px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    max-width: 72ch;
+  }
+  .section-body {
+    padding: 22px;
+  }
+
+  .grid-3, .grid-2 {
+    display: grid;
+    gap: 14px;
+  }
+  .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .card {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .card h3 { margin-bottom: 8px; }
+  .card p, .card ul, .card ol { margin: 0; }
+  .card ul, .card ol { padding-left: 1.15em; }
+  .card li + li { margin-top: 6px; }
+
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: rgba(47, 96, 127, 0.08);
+    padding: 14px 15px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  .stack { display: grid; gap: 12px; }
+  .day-panel { display: none; }
+  .day-panel.active { display: block; animation: fadeIn 180ms ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .step {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .step:first-child { border-top: 0; padding-top: 0; }
+  .time {
+    font-family: var(--mono);
+    color: var(--accent-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .step h3 { margin-bottom: 6px; }
+  .step p { margin: 0; }
+  .note { margin-top: 8px; color: var(--muted); font-size: 0.94rem; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .compare-card {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: grid;
+    gap: 10px;
+  }
+  .compare-card.selected {
+    border-color: rgba(47, 96, 127, 0.42);
+    box-shadow: 0 10px 30px rgba(47, 96, 127, 0.08);
+  }
+  .score {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .score strong { color: var(--text); }
+
+  .checklist { display: grid; gap: 10px; }
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .check input {
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    flex: 0 0 auto;
+  }
+  .check label { flex: 1; }
+  .check label strong { display: block; margin-bottom: 2px; }
+
+  details {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  summary { cursor: pointer; font-weight: 700; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  .ai-box, .copy-box {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .action {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 13px;
+    font-weight: 650;
+    color: var(--text);
+  }
+  .action.primary {
+    background: rgba(47, 96, 127, 0.14);
+    border-color: rgba(47, 96, 127, 0.34);
+  }
+  .action.good {
+    background: rgba(53, 105, 74, 0.12);
+    border-color: rgba(53, 105, 74, 0.28);
+  }
+  .action.warn {
+    background: rgba(154, 107, 41, 0.12);
+    border-color: rgba(154, 107, 41, 0.28);
+  }
+
+  .footer {
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 920px) {
+    .hero-grid, .grid-3, .grid-2, .compare-grid { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 1fr; gap: 6px; }
+    .section-head { flex-direction: column; align-items: start; }
+  }
+  @media (max-width: 640px) {
+    .page { padding-inline: 12px; }
+    .hero, .section-head, .section-body { padding-left: 16px; padding-right: 16px; }
+    h1 { font-size: 1.85rem; }
+    .stats { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="page">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Weekend itinerary</p>
+      <h1>景德镇周末</h1>
+    </div>
+    <div class="segmented" role="group" aria-label="主题切换">
+      <button type="button" data-theme-btn="light" aria-pressed="false">浅色</button>
+      <button type="button" data-theme-btn="system" aria-pressed="true">跟随系统</button>
+      <button type="button" data-theme-btn="dark" aria-pressed="false">深色</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">从上海出发的慢节奏周末</p>
+        <h2>少折返、少赶路、少排队，重点放在陶瓷文化和舒服收尾。</h2>
+        <p class="lede">这是一份交互式的景德镇周末工作台。你可以在这里比较周六路线、锁定酒店与返程时间、勾选待办，并一键复制给别人继续接手。当前默认按你的偏好，优先舒适、稳定、可操作，而不是塞满景点。</p>
+        <div class="status-row">
+          <div class="status"><span class="dot"></span><span id="progressText">已完成 0 / 6 项确认</span></div>
+          <div class="status">酒店锚点：景德镇假日酒店</div>
+          <div class="status">返程：下午</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="label">出发与返程</span>
+          <strong>周五晚上海出发，周日下午返沪</strong>
+        </div>
+        <div class="stat">
+          <span class="label">行程重点</span>
+          <strong>博物馆、老城、陶溪川、三宝村取舍</strong>
+        </div>
+        <div class="stat">
+          <span class="label">当前推荐</span>
+          <strong id="recommendationText">先走博物馆 + 老城，再留陶溪川收尾</strong>
+        </div>
+        <div class="stat">
+          <span class="label">住宿策略</span>
+          <strong id="hotelHint">景德镇假日酒店作为稳定落点</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>你的偏好映射</h2>
+        <p>我把你这次明确给出的偏好直接转成默认策略：酒店以景德镇假日酒店为锚，周日下午返程，周六先比较路线再锁定详细安排。</p>
+      </div>
+      <span class="pill">基于交互结果</span>
+    </div>
+    <div class="section-body grid-3">
+      <article class="card">
+        <h3>舒适优先</h3>
+        <p>你的默认行程逻辑是住得稳、切换少、返程留缓冲。景德镇这次也按这个标准处理，不做密集打卡版。</p>
+      </article>
+      <article class="card">
+        <h3>文化主线</h3>
+        <p>你偏好世界级博物馆和独特体验，所以把中国陶瓷博物馆放在第一主线，御窑厂 / 陶阳里和陶溪川做次级组合。</p>
+      </article>
+      <article class="card">
+        <h3>执行导向</h3>
+        <p>不是只给一份文字说明，而是做成能切换方案、能锁定安排、能保存待办的页面，方便你和同行继续往下确认。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>周六路线对比</h2>
+        <p>下面三套方案都保留你的慢节奏原则，但侧重点不同。你先看差异，再点选一套作为最终版。</p>
+      </div>
+      <span class="pill">点击锁定方案</span>
+    </div>
+    <div class="section-body">
+      <div class="compare-grid" id="routeCompare">
+        <button class="compare-card selected" type="button" data-route="museum-oldtown">
+          <h3>博物馆 + 老城</h3>
+          <div class="score"><strong>推荐</strong><span>最稳妥，信息密度高，适合第一次来景德镇。</span></div>
+          <ul>
+            <li>中国陶瓷博物馆作为开场。</li>
+            <li>御窑厂 / 陶阳里串联老城步行。</li>
+            <li>晚上回陶溪川收尾。</li>
+          </ul>
+        </button>
+        <button class="compare-card" type="button" data-route="museum-sanbao">
+          <h3>博物馆 + 三宝村</h3>
+          <div class="score"><strong>更松</strong><span>偏陶艺体验和慢逛，节奏更柔。</span></div>
+          <ul>
+            <li>上午先看博物馆。</li>
+            <li>下午把时间留给三宝村。</li>
+            <li>老城压缩成补充项。</li>
+          </ul>
+        </button>
+        <button class="compare-card" type="button" data-route="oldtown-sanbao">
+          <h3>老城 + 三宝村</h3>
+          <div class="score"><strong>拍照感</strong><span>更适合散步，但博物馆会降级。</span></div>
+          <ul>
+            <li>把老城放在前半天。</li>
+            <li>下午走三宝村和手作点。</li>
+            <li>适合对博物馆停留不想太久的情况。</li>
+          </ul>
+        </button>
+      </div>
+      <div class="callout" id="routeSummary">
+        <strong>当前建议：博物馆 + 老城</strong>
+        这套最贴合你的偏好。它保留了世界级博物馆的主线，也保留老城和陶溪川的慢逛感，且不会把周六变成跑点日。
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>每日安排</h2>
+        <p>先看三天整体节奏，再切换具体日程。你也可以把这部分当作锁定后的执行版本。</p>
+      </div>
+      <span class="pill">D1 / D2 / D3</span>
+    </div>
+    <div class="section-body">
+      <div class="day-tabs" role="tablist" aria-label="每日行程切换">
+        <button type="button" role="tab" aria-selected="true" class="tab" data-day-tab="d1">D1 周五</button>
+        <button type="button" role="tab" aria-selected="false" class="tab" data-day-tab="d2">D2 周六</button>
+        <button type="button" role="tab" aria-selected="false" class="tab" data-day-tab="d3">D3 周日</button>
+      </div>
+
+      <article class="day-panel active" data-day-panel="d1">
+        <div class="stack">
+          <div class="step">
+            <div class="time">19:00</div>
+            <div>
+              <h3>上海出发</h3>
+              <p>周五晚高铁前往景德镇。这个晚上不再安排复杂内容，目标只有一个：顺利抵达。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">抵达后</div>
+            <div>
+              <h3>入住景德镇假日酒店</h3>
+              <p>把景德镇假日酒店设为稳定落点。到达后直接入住，必要时在酒店附近简单吃饭，不再转场。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">晚上</div>
+            <div>
+              <h3>早点休息</h3>
+              <p>周五晚只做恢复，不追求打卡。把体力留给周六的主线。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="day-panel" data-day-panel="d2">
+        <div class="stack">
+          <div class="step">
+            <div class="time">上午</div>
+            <div>
+              <h3>中国陶瓷博物馆</h3>
+              <p>作为主线开场，优先在最清醒的时候去。这里是整趟周末最值得保留的核心点。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">中午</div>
+            <div>
+              <h3>安静午饭 + 休息</h3>
+              <p>午饭后预留至少 1 小时休息或咖啡时间，避免把下午压得太紧。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">下午</div>
+            <div>
+              <h3>按最终方案执行老城或三宝村</h3>
+              <p>如果锁定博物馆 + 老城，就走御窑厂 / 陶阳里；如果锁定博物馆 + 三宝村，就把时间留给陶艺体验和慢逛。</p>
+              <p class="note">这里是你要最终确认的详细安排，我会在页面里让你锁定后再稳定显示。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">晚上</div>
+            <div>
+              <h3>陶溪川收尾</h3>
+              <p>晚餐和散步放在陶溪川附近，作为一天的舒服收口，不再加远距离转场。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="day-panel" data-day-panel="d3">
+        <div class="stack">
+          <div class="step">
+            <div class="time">上午</div>
+            <div>
+              <h3>轻量补充点</h3>
+              <p>只保留一个点，默认给三宝国际陶艺村或周六未走完的区域补看。上午不再做大范围扩张。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">中午</div>
+            <div>
+              <h3>午饭 + 取行李 / 缓冲</h3>
+              <p>午饭后回酒店取行李，或者在车站附近等候。返程前留足时间，避免下午安排被交通打散。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="time">下午</div>
+            <div>
+              <h3>下午返沪</h3>
+              <p>按照你的偏好，周日下午返程。这样周日晚还有一点缓冲，周一状态更稳。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>酒店与强度</h2>
+        <p>酒店锚点已经按你的回答锁定为景德镇假日酒店。下面这部分把它放进实际节奏里，方便你继续确认其他点。</p>
+      </div>
+      <span class="pill">稳定优先</span>
+    </div>
+    <div class="section-body grid-2">
+      <article class="card">
+        <h3>酒店锚点</h3>
+        <p><strong>景德镇假日酒店</strong> 作为稳定落点最合适。它符合你“优先舒适和稳定”的旅行偏好，也适合周五晚到达和周日返程的节奏。</p>
+        <p class="note">如果你后面想把酒店再换成更靠近某个片区，我可以在这页里继续替你做对比。</p>
+      </article>
+      <article class="card">
+        <h3>强度判断</h3>
+        <ul>
+          <li>D1 低强度，只做到达和入住。</li>
+          <li>D2 中强度，核心是博物馆 + 一条主线，不跑点。</li>
+          <li>D3 低强度，只留半天补充和返程缓冲。</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>待确认清单</h2>
+        <p>这个清单会自动保存到本机浏览器。你确认完后，下次打开还能接着看进度。</p>
+      </div>
+      <span class="status"><span class="dot"></span><span id="saveState">已自动保存</span></span>
+    </div>
+    <div class="section-body grid-2">
+      <div class="checklist" id="checklist">
+        <div class="check"><input type="checkbox" data-check="train-out"><label><strong>确认周五晚去程车次</strong><span>优先保证顺利出发，不强求最便宜。</span></label></div>
+        <div class="check"><input type="checkbox" data-check="hotel"><label><strong>确认景德镇假日酒店订单</strong><span>把酒店锚点锁定，减少后面反复比较。</span></label></div>
+        <div class="check"><input type="checkbox" data-check="route"><label><strong>从三套周六路线里锁定一套</strong><span>先比较，再点选最终方案。</span></label></div>
+        <div class="check"><input type="checkbox" data-check="food"><label><strong>确认周五晚和周六晚的吃饭位置</strong><span>尽量放在酒店或陶溪川附近，减少转场。</span></label></div>
+        <div class="check"><input type="checkbox" data-check="return"><label><strong>确认周日下午返程时间</strong><span>预留午饭、取行李和车站缓冲。</span></label></div>
+        <div class="check"><input type="checkbox" data-check="wrap"><label><strong>确认是否需要补一版 AI 输入摘要</strong><span>方便你发给朋友或者换个窗口继续接手。</span></label></div>
+      </div>
+      <div class="stack">
+        <details open>
+          <summary>一键复制给别人</summary>
+          <div class="copy-box" id="copyBox">景德镇周末：周五晚上海出发，住景德镇假日酒店；周六先看中国陶瓷博物馆，再在“博物馆 + 老城 / 博物馆 + 三宝村 / 老城 + 三宝村”三套方案里锁定一套；周日保留半天，下午返沪。整体目标是轻松慢游，不把周末做成赶点任务。</div>
+          <div class="toolbar" style="margin-top:10px;">
+            <button class="action primary" type="button" id="copyBtn">复制摘要</button>
+            <button class="action good" type="button" id="lockBtn">锁定当前方案</button>
+            <button class="action warn" type="button" id="resetBtn">重置选择</button>
+          </div>
+        </details>
+        <details>
+          <summary>给 AI 的输入</summary>
+          <div class="ai-box">上海出发，周五晚去景德镇，周日下午返沪，2 人同行。酒店优先景德镇假日酒店。我的偏好是舒适优先、慢节奏、少折返，周六请比较“博物馆 + 老城 / 博物馆 + 三宝村 / 老城 + 三宝村”三套路线并给出建议，然后锁定一套详细安排。目标不是打卡密集景点，而是轻松放松、慢慢走完景德镇周末。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer">这份页面会保存你在本机浏览器里的主题、路线选择和勾选状态。来源：景德镇周末行程规划.md + 你的旅行偏好记忆。</p>
+</div>
+
+<script>
+  (() => {
+    const storage = {
+      get(key) { try { return localStorage.getItem(key); } catch (err) { return null; } },
+      set(key, value) { try { localStorage.setItem(key, value); } catch (err) {} }
+    };
+
+    const themeButtons = document.querySelectorAll('[data-theme-btn]');
+    const theme = storage.get('jdz-theme') || 'system';
+    function applyTheme(mode) {
+      if (mode === 'system') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', mode);
+      themeButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.themeBtn === mode)));
+      storage.set('jdz-theme', mode);
+    }
+    applyTheme(theme);
+    themeButtons.forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.themeBtn)));
+
+    const routes = {
+      'museum-oldtown': {
+        title: '当前建议：博物馆 + 老城',
+        text: '这套最贴合你的偏好。它保留了中国陶瓷博物馆的主线，也保留御窑厂 / 陶阳里和陶溪川的慢逛收尾，稳定且不赶。',
+        summary: '先看中国陶瓷博物馆，再走御窑厂 / 陶阳里，晚上回陶溪川收尾。'
+      },
+      'museum-sanbao': {
+        title: '当前建议：博物馆 + 三宝村',
+        text: '这套更松，偏陶艺体验和慢逛。如果你更想把周六做轻一点，它会更合适，但老城的信息密度会被压缩。',
+        summary: '上午博物馆，下午三宝村，老城只做补充。'
+      },
+      'oldtown-sanbao': {
+        title: '当前建议：老城 + 三宝村',
+        text: '这套更偏散步和拍照感，但会让博物馆降级，不如前两套稳定。如果你不想在博物馆停太久，它是备选。',
+        summary: '前半天老城，后半天三宝村，博物馆作为补充。'
+      }
+    };
+
+    const routeButtons = document.querySelectorAll('[data-route]');
+    const routeSummary = document.getElementById('routeSummary');
+    const recommendationText = document.getElementById('recommendationText');
+    const routeLabel = 'jdz-route';
+    const savedRoute = storage.get(routeLabel) || 'museum-oldtown';
+
+    function setRoute(key) {
+      routeButtons.forEach(btn => btn.classList.toggle('selected', btn.dataset.route === key));
+      routeSummary.innerHTML = '<strong>' + routes[key].title + '</strong>' + routes[key].text;
+      recommendationText.textContent = routes[key].summary;
+      storage.set(routeLabel, key);
+      storage.set('jdz-copy', document.getElementById('copyBox').textContent.replace('“博物馆 + 老城 / 博物馆 + 三宝村 / 老城 + 三宝村”三套方案里锁定一套详细安排', routes[key].summary));
+    }
+    setRoute(savedRoute);
+    routeButtons.forEach(btn => btn.addEventListener('click', () => setRoute(btn.dataset.route)));
+
+    const dayTabs = document.querySelectorAll('[data-day-tab]');
+    const dayPanels = document.querySelectorAll('[data-day-panel]');
+    const savedDay = storage.get('jdz-day') || 'd1';
+    function showDay(day) {
+      dayTabs.forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.dayTab === day)));
+      dayPanels.forEach(panel => panel.classList.toggle('active', panel.dataset.dayPanel === day));
+      storage.set('jdz-day', day);
+    }
+    showDay(savedDay);
+    dayTabs.forEach(tab => tab.addEventListener('click', () => showDay(tab.dataset.dayTab)));
+
+    const checkInputs = document.querySelectorAll('[data-check]');
+    const progressText = document.getElementById('progressText');
+    const savedChecks = (() => { try { return JSON.parse(storage.get('jdz-checks') || '{}'); } catch (err) { return {}; } })();
+    function updateProgress() {
+      let done = 0;
+      checkInputs.forEach(input => { if (input.checked) done += 1; });
+      progressText.textContent = '已完成 ' + done + ' / ' + checkInputs.length + ' 项确认';
+      storage.set('jdz-checks', JSON.stringify(Object.fromEntries([...checkInputs].map(i => [i.dataset.check, i.checked]))));
+    }
+    checkInputs.forEach(input => {
+      input.checked = Boolean(savedChecks[input.dataset.check]);
+      input.addEventListener('change', updateProgress);
+    });
+    updateProgress();
+
+    const copyBtn = document.getElementById('copyBtn');
+    const lockBtn = document.getElementById('lockBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const copyBox = document.getElementById('copyBox');
+    const saveState = document.getElementById('saveState');
+    const hotelHint = document.getElementById('hotelHint');
+    const hotelText = '景德镇假日酒店作为稳定落点';
+    hotelHint.textContent = hotelText;
+
+    function currentSummary() {
+      const route = storage.get('jdz-route') || 'museum-oldtown';
+      return '景德镇周末：周五晚上海出发，住景德镇假日酒店；周六先看中国陶瓷博物馆，再在“博物馆 + 老城 / 博物馆 + 三宝村 / 老城 + 三宝村”三套方案里锁定一套；周日保留半天，下午返沪。当前锁定方案：' + routes[route].summary + ' 整体目标是轻松慢游，不把周末做成赶点任务。';
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        saveState.textContent = '已复制';
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        saveState.textContent = '已复制';
+      }
+      setTimeout(() => { saveState.textContent = '已自动保存'; }, 1300);
+    }
+
+    copyBtn.addEventListener('click', () => copyText(currentSummary()));
+    lockBtn.addEventListener('click', () => {
+      storage.set('jdz-locked', currentSummary());
+      saveState.textContent = '已锁定当前方案';
+      setTimeout(() => { saveState.textContent = '已自动保存'; }, 1500);
+    });
+    resetBtn.addEventListener('click', () => {
+      ['jdz-checks', 'jdz-route', 'jdz-day', 'jdz-locked'].forEach(key => { try { localStorage.removeItem(key); } catch (err) {} });
+      checkInputs.forEach(i => { i.checked = false; });
+      updateProgress();
+      setRoute('museum-oldtown');
+      showDay('d1');
+      saveState.textContent = '已重置';
+      setTimeout(() => { saveState.textContent = '已自动保存'; }, 1500);
+    });
+
+    const locked = storage.get('jdz-locked');
+    if (locked) {
+      copyBox.textContent = locked;
+      saveState.textContent = '已恢复锁定方案';
+    } else {
+      copyBox.textContent = currentSummary();
+    }
+  })();
+</script>
