@@ -62,19 +62,19 @@ function selectSpot(id){currentSpot=id;const spot=itinerary.spots[id];if(!spot)r
 function updateProgress(){const checks=[...document.querySelectorAll('[data-check]')],done=checks.filter(i=>i.checked).length;document.getElementById('progressText').textContent=`${done}/${checks.length}`;storage.set('jdzChecks',JSON.stringify(Object.fromEntries(checks.map(i=>[i.dataset.check,i.checked]))))}
 function updateCopyBox(){const route=itinerary.routes.find(i=>i.id===activeRoute);copyBox.textContent=`景德镇周末路书：周五 19:00 从上海坐火车出发，约 4 小时，23:00 多到达景德镇，入住景德镇假日酒店。周六推荐方案为“${route.title}”：上午中国陶瓷博物馆，中午在博物馆到老城之间吃江西菜/本地菜，下午御窑厂/陶阳里，15:30-16:30 安排可打卡咖啡，晚上陶溪川晚饭和散步。周日上午三宝村轻量补充或补看老城，午饭后回酒店取行李，周日下午 16:00-17:00 火车返沪。整体原则：舒适优先、少折返、不把周末做成赶点任务。`}
 function restoreChecks(){let saved={};try{saved=JSON.parse(storage.get('jdzChecks')||'{}')}catch(e){}document.querySelectorAll('[data-check]').forEach(input=>{input.checked=Boolean(saved[input.dataset.check]);input.addEventListener('change',updateProgress)});updateProgress()}
-const map=L.map('map',{center:[29.297,117.218],zoom:13,zoomControl:false,preferCanvas:true});
+const map=L.map('map',{center:[29.305,117.22],zoom:13,zoomControl:false,preferCanvas:true});
 const gaodeRoad=L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'高德地图'});
 const gaodeSat=L.layerGroup([L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'高德地图'}),L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18})]);
 gaodeRoad.addTo(map);
 L.control.zoom({position:'bottomright'}).addTo(map);
-const points={station:[29.3037,117.2088],hotel:[29.3032,117.2156],museum:[29.2854,117.2132],oldtown:[29.2884,117.2104],coffee:[29.2901,117.2187],taoxichuan:[29.2968,117.2294],sanbao:[29.3359,117.2258],food:[29.2932,117.2222]};
+const points={station:[29.3037,117.2088],hotel:[29.3032,117.2156],museum:[29.2876,117.2124],oldtown:[29.2921,117.2136],coffee:[29.2928,117.2208],taoxichuan:[29.2967,117.2287],sanbao:[29.3378,117.2248],food:[29.2947,117.2189]};
 const routePath=[points.station,points.hotel,points.museum,points.oldtown,points.coffee,points.taoxichuan,points.food,points.sanbao];
 const mainLine=L.polyline(routePath,{color:'#b85c38',weight:4,opacity:.82,smoothFactor:1.2}).addTo(map);
 const altLine=L.polyline([points.oldtown,points.sanbao],{color:'#2f6788',weight:3,opacity:.45,dashArray:'8 8',smoothFactor:1.2}).addTo(map);
 const routeLabels=[{p:points.station,t:'D1 抵达',c:'#b85c38'},{p:points.museum,t:'D2 上午',c:'#b85c38'},{p:points.taoxichuan,t:'D2 晚上',c:'#b85c38'},{p:points.sanbao,t:'D3 上午',c:'#2f6788'}];
 routeLabels.forEach(item=>L.marker(item.p,{interactive:false,icon:L.divIcon({className:'route-km-label',html:`<span style="background:${item.c}">${item.t}</span>`,iconSize:[1,1],iconAnchor:[0,0]})}).addTo(map));
 const markerMeta=[['station','景德镇站 / 北站','D1 23:00+'],['hotel','景德镇假日酒店','2 晚落点'],['museum','中国陶瓷博物馆','D2 上午'],['oldtown','御窑厂 / 陶阳里','D2 下午'],['coffee','可打卡咖啡','15:30 插入'],['taoxichuan','陶溪川','晚饭+散步'],['sanbao','三宝村','D3 上午'],['food','餐饮锚点','夜宵/午晚饭']];
-markerMeta.forEach(([id,title,sub])=>{const marker=L.circleMarker(points[id],{radius:8,color:'#fff',weight:2,fillColor:id==='hotel'?'#2f765f':id==='sanbao'?'#2f6788':'#b75c39',fillOpacity:.96}).addTo(map);marker.bindTooltip(title,{permanent:true,direction:'top',offset:[0,-11],className:'day-label'});marker.on('click',()=>selectSpot(id));marker._icon&&marker._icon.classList.add('pin-marker');});
+markerMeta.forEach(([id,title,sub])=>{const marker=L.circleMarker(points[id],{radius:8,color:'#fff',weight:2,fillColor:id==='hotel'?'#2f765f':id==='sanbao'?'#2f6788':'#b75c39',fillOpacity:.96}).addTo(map);marker.bindTooltip(title,{permanent:true,direction:'top',offset:[0,-11],className:'day-label'});marker.on('click',()=>selectSpot(id));marker._id=id;marker._icon&&marker._icon.classList.add('pin-marker');});
 map.on('dragstart',()=>{routeStatus.className='route-status warn';routeStatus.textContent='地图可拖动，正在查看景德镇底图。'});
 map.on('zoomend',()=>{routeStatus.className='route-status warn';routeStatus.textContent='地图已更新缩放。';});
 function fitAll(){map.fitBounds(mainLine.getBounds(),{padding:[30,30]})}
