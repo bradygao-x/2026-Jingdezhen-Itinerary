@@ -26,14 +26,21 @@ function clearRouteLayers() {
   labelLayers.length = 0;
 }
 
+function getSegmentPath(segment, preferAmap = true) {
+  if (preferAmap && Array.isArray(segment.path) && segment.path.length >= 2) return segment.path;
+  return segment.fallbackPath || [segment.a, segment.b];
+}
+
 function drawRouteSegments(useAmapRoute = false) {
   clearRouteLayers();
   routeSegments.forEach(segment => {
-    const segmentPath = segment.path || [segment.a, segment.b];
+    const segmentPath = getSegmentPath(segment, useAmapRoute);
+    const isAmapPath = segmentPath === segment.path;
     const layer = L.polyline(segmentPath, {
-      color: useAmapRoute ? '#874127' : '#b85c38',
-      weight: 6,
-      opacity: useAmapRoute ? 0.28 : 0.22,
+      color: isAmapPath ? '#874127' : '#2e678f',
+      weight: isAmapPath ? 6 : 4,
+      opacity: isAmapPath ? 0.28 : 0.42,
+      dashArray: isAmapPath ? null : '8 8',
       interactive: false
     }).addTo(map);
     routeLayers.push(layer);
@@ -56,19 +63,34 @@ drawRouteSegments(false);
 async function loadAmapDrivingRoutes() {
   try {
     setRouteStatus('高德路线：正在加载真实驾车路线...', 'warn');
-    const paths = [];
-    for (const segment of routeSegments) {
-      paths.push(segment.path);
-    }
+    const paths = routeSegments.map(segment => getSegmentPath(segment, true));
+    const fallbackSegments = routeSegments
+      .filter(segment => !(Array.isArray(segment.path) && segment.path.length >= 2))
+      .map(segment => `${segment.from}-${segment.to}`);
     const road = paths.flatMap((path, index) => index === 0 ? path : path.slice(1));
     if (!road.length) return;
     map.removeLayer(mainLine);
     mainLine = L.polyline(road, { color: '#b85c38', weight: 4, opacity: 0.9, smoothFactor: 1.2 }).addTo(map);
     drawRouteSegments(true);
     map.fitBounds(mainLine.getBounds(), { padding: [30, 30] });
-    setRouteStatus('高德路线：已加载真实驾车路线', 'ok');
+    if (fallbackSegments.length) {
+      setRouteStatus(`高德路线：部分加载，${fallbackSegments.join('、')} 使用点到点直线替代。`, 'warn');
+    } else {
+      setRouteStatus('高德路线：已加载真实驾车路线', 'ok');
+    }
   } catch (error) {
-    setRouteStatus(`高德路线：加载失败，使用内置备份路线。${error.message || error}`, 'fail');
+    routeSegments.forEach(segment => { segment.path = null; });
+    const straightRoad = routeSegments.flatMap((segment, index) => {
+      const path = getSegmentPath(segment, false);
+      return index === 0 ? path : path.slice(1);
+    });
+    if (straightRoad.length) {
+      map.removeLayer(mainLine);
+      mainLine = L.polyline(straightRoad, { color: '#2e678f', weight: 4, opacity: 0.72, dashArray: '8 8' }).addTo(map);
+      drawRouteSegments(false);
+      map.fitBounds(mainLine.getBounds(), { padding: [30, 30] });
+    }
+    setRouteStatus(`高德路线：加载失败，已使用点到点直线替代。${error.message || error}`, 'fail');
   }
 }
 
