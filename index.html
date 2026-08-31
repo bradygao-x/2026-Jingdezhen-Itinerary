@@ -1,89 +1,131 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>景德镇周末交互路书</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<style>
-*{box-sizing:border-box}:root{--bg:#f5f3ee;--panel:rgba(255,255,255,.95);--solid:#fff;--soft:#eef2ee;--ink:#17211d;--muted:#65716b;--line:#d9ded6;--brand:#b75c39;--brand-dark:#864229;--blue:#2f6788;--green:#2f765f;--amber:#b97920;--red:#b64038;--shadow:0 16px 42px rgba(32,38,35,.14)}html,body{height:100%}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);overflow:hidden}button,input{font:inherit}button{cursor:pointer;color:inherit}.app{min-height:100vh;min-height:100dvh;position:relative}.topbar{position:absolute;top:14px;left:14px;right:14px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 14px;border:1px solid rgba(217,222,214,.92);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(14px)}.topbar h1{margin:0;font-size:18px;line-height:1.25}.subtitle{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.55}.topbar-actions,.chips,.map-tools{display:flex;align-items:center;gap:8px}.chips{flex-wrap:wrap}.chip,.pill,.tag{display:inline-flex;align-items:center;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 9px;font-size:12px;color:#39423e;white-space:nowrap}.tag{border-radius:5px;padding:1px 5px;margin-left:4px;font-size:11px}.must{color:var(--red);background:#fff1ef;border-color:#f2d1cb}.good{color:var(--green);background:#eef8f4;border-color:#cde5db}.warn{color:var(--amber);background:#fff7e8;border-color:#efd8a7}aside{position:absolute;top:82px;left:14px;bottom:16px;width:min(430px,calc(100vw - 28px));background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-y:auto;z-index:30;box-shadow:var(--shadow);backdrop-filter:blur(14px);scrollbar-width:thin}.header{padding:14px 14px 12px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#fff 0%,#f3eee5 100%)}.header h1{margin:0 0 8px;font-size:23px;line-height:1.25}.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:12px;border-bottom:1px solid var(--line);background:#fafbf8;position:sticky;top:0;z-index:5}.tab,.tool-btn,.small-btn{border:1px solid var(--line);background:var(--solid);border-radius:7px;min-height:38px;padding:7px 9px;color:var(--muted);font-size:13px;font-weight:700}.tab.active,.tool-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}.panel{display:none;padding:14px}.panel.active{display:block}.section-title{margin:8px 2px 10px;font-size:15px}.notice,.day-card,.compare-card,.hotel-card{background:var(--solid);border:1px solid var(--line);border-radius:8px;padding:13px;margin-bottom:10px;box-shadow:0 5px 18px rgba(42,48,45,.04)}.notice{background:var(--soft);color:#39423e;font-size:13px;line-height:1.65}.notice strong{color:var(--brand-dark)}.day-card,.compare-card{display:block;text-align:left;width:100%}.day-card.active,.compare-card.active{border-color:var(--brand);box-shadow:0 0 0 2px rgba(184,92,56,.13)}.day-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:5px}.day-no{color:var(--brand-dark);font-weight:800;font-size:12px}.date{color:var(--muted);font-size:12px;white-space:nowrap}.route-title{font-size:15px;font-weight:800;line-height:1.35}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.pill{border-radius:6px;background:#f4f6f2;color:var(--muted)}.level-a{color:#fff;background:var(--red);border-color:var(--red)}.level-b{color:#fff;background:var(--brand);border-color:var(--brand)}.level-c{color:#fff;background:var(--blue);border-color:var(--blue)}.safe{color:var(--green);background:#eef8f4;border-color:#cde5db}.watch{color:var(--amber);background:#fff7e8;border-color:#efd8a7}.small,ul.clean{color:var(--muted);font-size:12px;line-height:1.65}ul.clean{margin:8px 0 0;padding-left:18px}.score{display:grid;grid-template-columns:84px 1fr;gap:8px;font-size:13px;margin:7px 0;color:var(--muted)}.bar{height:9px;background:#eef1ec;border-radius:999px;overflow:hidden;align-self:center}.bar span{display:block;height:100%;background:var(--green)}.bar.warn span{background:var(--amber)}.checklist{display:grid;gap:8px;margin-top:8px}.check-item{display:grid;grid-template-columns:20px 1fr;gap:8px;align-items:start;color:var(--muted);font-size:13px;line-height:1.55}.check-item input{width:16px;height:16px;margin-top:2px;accent-color:var(--green)}main{position:absolute;inset:0;min-width:0;background:#dfe5df}#map{position:absolute;inset:0;background:#dbe2d8}.leaflet-container{font:inherit}.floating{position:absolute;left:438px;right:18px;bottom:18px;display:grid;grid-template-columns:1fr auto;gap:10px;z-index:20;pointer-events:none}.summary-bar,.map-tools{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}.summary-bar{padding:12px 14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stat .val{font-size:18px;font-weight:800;color:var(--brand-dark)}.stat .lab{font-size:11px;color:var(--muted);margin-top:2px}.map-tools{padding:8px;display:flex;flex-direction:column;gap:6px;align-self:end}.tool-btn{min-width:76px;min-height:34px}.legend{position:absolute;top:82px;right:422px;z-index:20;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;box-shadow:var(--shadow);font-size:12px;color:var(--muted);pointer-events:none}.legend-row{display:flex;align-items:center;gap:8px;margin:5px 0}.line-sample{width:26px;height:4px;border-radius:4px;background:var(--brand)}.line-sample.alt{background:transparent;border-top:3px dashed var(--blue)}.dot{width:10px;height:10px;border-radius:50%;background:var(--green)}.route-km-label{background:transparent;border:0;box-shadow:none}.route-km-label span{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(184,92,56,.92);color:#fff;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.18)}.route-km-label.alt span{background:rgba(46,103,143,.92)}.route-status{position:absolute;left:438px;top:82px;z-index:21;max-width:min(420px,calc(100vw - 690px));padding:8px 11px;border-radius:8px;border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);color:var(--muted);font-size:12px;line-height:1.45;pointer-events:none}.route-status.ok{color:var(--green)}.route-status.warn{color:var(--amber)}.route-status.fail{color:var(--red)}.detail-panel{position:absolute;top:82px;right:16px;bottom:16px;width:min(390px,calc(100vw - 490px));z-index:25;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(14px)}.detail-head{padding:15px 16px 12px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#fff 0%,#f7efe9 100%)}.detail-kicker{color:var(--brand-dark);font-size:12px;font-weight:800}.detail-title{margin:4px 0 0;font-size:18px;line-height:1.35}.detail-body{padding:14px 16px 16px;overflow-y:auto}.detail-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.detail-metric{padding:9px;border:1px solid var(--line);border-radius:8px;background:#fafbf8;min-width:0}.detail-metric span{display:block;color:var(--muted);font-size:11px}.detail-metric strong{display:block;margin-top:3px;color:var(--ink);font-size:13px;line-height:1.35;overflow-wrap:anywhere}.detail-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);color:#3f4a45;font-size:13px;line-height:1.65}.detail-section h3{margin:0 0 6px;color:var(--ink);font-size:13px}.detail-section p{margin:0 0 8px}.copy-box{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#303a35;background:#fafbf8;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:12px;line-height:1.7;white-space:pre-wrap}.spot-btn{margin-top:9px;border:1px solid var(--line);background:#fff;color:var(--brand-dark);border-radius:7px;padding:7px 9px;font-size:12px;font-weight:700;cursor:pointer}@media(max-width:1120px){.detail-panel{width:min(360px,calc(100vw - 470px))}.route-status{max-width:min(360px,calc(100vw - 490px))}.summary-bar{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:900px){html,body{height:auto}body{overflow:auto}.app{display:flex;flex-direction:column;min-height:100vh}.topbar{position:sticky;top:0;left:auto;right:auto;order:1;margin:10px;align-items:flex-start}.topbar h1{font-size:16px}.topbar .subtitle{display:block}.topbar .chips{display:none}.tool-btn{min-width:64px}main{position:relative;order:2;display:flex;flex-direction:column;height:auto;min-height:0;margin:0 10px 10px;border:1px solid var(--line);border-radius:12px;overflow:visible;box-shadow:var(--shadow)}#map{position:relative;order:1;height:62vh;min-height:430px;overflow:hidden;border-radius:12px 12px 0 0}.floating{left:10px;right:10px;bottom:10px;display:block;position:absolute}.summary-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px}.legend{display:none}.map-tools{position:absolute;right:0;bottom:0;flex-direction:row;width:max-content;box-shadow:none}.route-status{left:10px;right:10px;top:10px;max-width:none;position:absolute}.detail-panel{position:relative;order:2;display:flex;width:auto;top:auto;right:auto;bottom:auto;margin:0;border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:none;backdrop-filter:none}.detail-body{max-height:none}aside{position:relative;order:3;top:auto;left:auto;right:auto;bottom:auto;width:auto;height:auto;max-height:none;margin:0 10px 16px;border-radius:12px;z-index:1;display:block}.header{display:none}.tabs{grid-template-columns:repeat(4,1fr);gap:5px;padding:8px;top:0}.tab{min-height:34px;padding:6px 4px;font-size:12px}.panel{overflow:visible;padding:10px}.leaflet-control-zoom{display:none}.leaflet-touch .leaflet-bar a{width:32px;height:32px;line-height:32px}.leaflet-bottom.leaflet-right{right:6px;bottom:82px}.leaflet-bottom.leaflet-left{left:6px;bottom:82px}.detail-metrics{grid-template-columns:1fr}.pin-sample{display:none}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>景德镇周末交互路书</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="./assets/css/app.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <div>
-      <h1>景德镇周末交互路书</h1>
-      <p class="subtitle">上海周五 19:00 出发，约 4 小时到达；住景德镇假日酒店；周日下午 5:30 返沪。</p>
+  <div class="app">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1>景德镇周末交互路书</h1>
+        <p class="subtitle">上海周五 19:00 出发，周日返沪；按新疆结构拆分为日程、路线、住宿、待办和景点说明。</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="chips">
+          <span class="chip">2晚3天</span>
+          <span class="chip">慢节奏</span>
+          <span class="chip">陶瓷文化</span>
+          <span class="chip">高德底图</span>
+        </div>
+        <button class="tool-btn" id="btnTopFit" type="button">全景</button>
+      </div>
     </div>
-    <div class="topbar-actions">
-      <div class="chips"><span class="chip">2晚3天</span><span class="chip">慢节奏</span><span class="chip">陶瓷文化</span><span class="chip">餐咖嵌入</span></div>
-    </div>
+
+    <aside>
+      <div class="header">
+        <h1>景德镇周末交互路书</h1>
+        <p class="subtitle">主推荐：D1 到达入住；D2 中国陶瓷博物馆 → 研究院/704 所 → 御窑厂 / 陶阳里 → 陶溪川；D3 三宝村轻量补充后返程。</p>
+        <div class="chips">
+          <span class="chip">景德镇北站</span>
+          <span class="chip">陶溪川假日酒店</span>
+          <span class="chip">周五 19:00 火车</span>
+          <span class="chip">周日返沪</span>
+        </div>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="days" type="button">日程</button>
+        <button class="tab" data-tab="routes" type="button">路线</button>
+        <button class="tab" data-tab="hotels" type="button">住宿</button>
+        <button class="tab" data-tab="todo" type="button">待办</button>
+      </div>
+      <section class="panel active" id="days"></section>
+      <section class="panel" id="routes">
+        <h2 class="section-title">路线方案</h2>
+        <div class="notice"><strong>推荐结论：</strong>高德校正后，酒店应落在陶溪川片区，北站在高铁大道一侧。周六主线推荐“博物馆 → 研究院/704 所 → 御窑厂 / 陶阳里 → 陶溪川”，周日三宝村轻量补充。</div>
+        <div id="routeCards"></div>
+        <div class="hotel-card">
+          <h3>是否一定要去的点</h3>
+          <div class="checklist">
+            <label class="check-item"><input type="checkbox" checked disabled><span>中国陶瓷博物馆：主线开场，优先保留</span></label>
+            <label class="check-item"><input type="checkbox" checked disabled><span>景德镇陶瓷研究院 / 新厂西路陶瓷研究节点：替代错误的 704 所命名</span></label>
+            <label class="check-item"><input type="checkbox" checked disabled><span>陶溪川：晚饭和散步收尾，优先保留</span></label>
+            <label class="check-item"><input type="checkbox" checked disabled><span>三宝村：周日上午轻量补充，建议保留</span></label>
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="hotels">
+        <h2 class="section-title">每日住宿</h2>
+        <div class="notice"><strong>已核对酒店：</strong>景德镇假日酒店位于昌江大道陶溪川文创孵化中心 A 座，坐标更接近陶溪川片区，不在北站附近。</div>
+        <div id="hotelCards"></div>
+      </section>
+      <section class="panel" id="todo">
+        <h2 class="section-title">待确认清单</h2>
+        <div class="notice">高德已校正站点、酒店和主要景点位置。后续如果你改车次或换酒店，只需要更新 `route-data.js` 里的起终点和 `itinerary.js` 里的文字说明。</div>
+        <div class="hotel-card">
+          <h3>交通与住宿</h3>
+          <div class="checklist">
+            <label class="check-item"><input type="checkbox" data-check="train-out"><span>确认周五 19:00 左右高铁票</span></label>
+            <label class="check-item"><input type="checkbox" data-check="train-back"><span>确认周日返程车次和大致返程时间</span></label>
+            <label class="check-item"><input type="checkbox" data-check="hotel"><span>确认景德镇假日酒店 2 晚订单、晚到入住和早餐时间</span></label>
+          </div>
+        </div>
+        <div class="hotel-card">
+          <h3>周六主线</h3>
+          <div class="checklist">
+            <label class="check-item"><input type="checkbox" data-check="museum"><span>确认中国陶瓷博物馆开放和入馆规则</span></label>
+            <label class="check-item"><input type="checkbox" data-check="lunch"><span>确认周六午饭：博物馆到老城之间的本地餐馆</span></label>
+            <label class="check-item"><input type="checkbox" data-check="coffee"><span>确认周六咖啡：午后放在陶阳里或陶溪川步行段</span></label>
+            <label class="check-item"><input type="checkbox" data-check="dinner"><span>确认周六晚饭：陶溪川附近</span></label>
+          </div>
+        </div>
+        <div class="hotel-card">
+          <h3>陶瓷购买</h3>
+          <div class="checklist">
+            <label class="check-item"><input type="checkbox" data-check="ceramic-budget"><span>先定预算和用途：日用碗碟 / 茶器 / 摆件</span></label>
+            <label class="check-item"><input type="checkbox" data-check="shipping"><span>问清楚破损赔付、包装和快递；超过手提重量就直接发快递</span></label>
+          </div>
+        </div>
+        <div class="hotel-card">
+          <h3>交接摘要</h3>
+          <div class="copy-box" id="copyBox"></div>
+          <button class="small-btn" id="copyBtn" type="button">复制摘要</button>
+        </div>
+      </section>
+    </aside>
+
+    <main>
+      <div id="map"></div>
+      <div class="route-status warn" id="routeStatus">高德路线：准备加载</div>
+      <div class="legend">
+        <div class="legend-row"><span class="line-sample"></span><span>主路线</span></div>
+        <div class="legend-row"><span class="line-sample alt"></span><span>返程/备选</span></div>
+        <div class="legend-row"><span class="dot"></span><span>可点击节点</span></div>
+        <div class="legend-row"><span class="pill level-a">A</span><span>必保留</span></div>
+      </div>
+      <div class="floating">
+        <div class="summary-bar">
+          <div class="stat"><div class="val">2晚3天</div><div class="lab">总行程</div></div>
+          <div class="stat"><div class="val">周五 19:00</div><div class="lab">出发</div></div>
+          <div class="stat"><div class="val">周日返沪</div><div class="lab">返程</div></div>
+          <div class="stat"><div class="val" id="progressText">0/9</div><div class="lab">待办进度</div></div>
+        </div>
+        <div class="map-tools">
+          <button class="tool-btn active" id="btnRoad" type="button">路网</button>
+          <button class="tool-btn" id="btnSat" type="button">卫星</button>
+          <button class="tool-btn" id="btnFit" type="button">全览</button>
+        </div>
+      </div>
+      <section class="detail-panel active" id="detailPanel" aria-live="polite"></section>
+    </main>
   </div>
 
-  <aside>
-    <div class="header">
-      <h1>景德镇周末交互路书</h1>
-      <p class="subtitle">主推荐：D1 到达入住；D2 中国陶瓷博物馆 -> 午饭 -> 御窑厂 / 陶阳里 -> 咖啡 -> 陶溪川晚饭与散步；D3 三宝村轻量补充 -> 下午返程。</p>
-      <div class="chips"><span class="chip">景德镇假日酒店</span><span class="chip">19:00 火车</span><span class="chip">23:00+ 到达</span><span class="chip">16-17 点返程</span></div>
-    </div>
-    <div class="tabs" role="tablist"><button class="tab active" data-tab="days" type="button">日程</button><button class="tab" data-tab="routes" type="button">方案</button><button class="tab" data-tab="food" type="button">餐咖</button><button class="tab" data-tab="todo" type="button">待办</button></div>
-    <section class="panel active" id="days"></section>
-    <section class="panel" id="routes"><h2 class="section-title">周六路线对比</h2><div class="notice"><strong>推荐结论：</strong>优先选“博物馆 + 704所 + 老城 + 陶溪川”。这是这次最完整的主文化线；三宝村放周日上午，陶瓷选购只保留轻量窗口即可。</div><div id="routeCards"></div><div class="hotel-card"><h3>是否一定要去的点</h3><div class="checklist"><label class="check-item"><input type="checkbox" checked disabled><span>中国陶瓷博物馆：主线开场，优先保留</span></label><label class="check-item"><input type="checkbox" checked disabled><span>704 所：你已确认必去，纳入周六主线</span></label><label class="check-item"><input type="checkbox" checked disabled><span>陶溪川：晚饭和散步收尾，优先保留</span></label><label class="check-item"><input type="checkbox" checked disabled><span>三宝村：周日上午轻量补充，建议保留</span></label></div></div></section>
-    <section class="panel" id="food"><h2 class="section-title">餐饮、咖啡、轻量选购</h2><div class="notice">这次把陶瓷选购降为轻量任务：只挑顺手、审美稳、可快递的器具。到出发前再用大众点评 / 高德按当前位置二次确认。</div><div class="hotel-card"><h3>轻量选购小常识</h3><div class="checklist"><label class="check-item"><input type="checkbox" checked disabled><span>先定用途：日用碗碟 / 茶器 / 摆件，不要混着看</span></label><label class="check-item"><input type="checkbox" checked disabled><span>看口沿、底足、釉面是否平整，有无崩口、针眼、流釉</span></label><label class="check-item"><input type="checkbox" checked disabled><span>掂重量：日用器不要太重，长期使用更舒服</span></label><label class="check-item"><input type="checkbox" checked disabled><span>问清包装和快递：易碎品尽量直接寄，不手提上火车</span></label></div></div><div id="foodCards"></div></section>
-    <section class="panel" id="todo"><h2 class="section-title">待确认清单</h2><div class="notice">勾选状态保存在当前浏览器。真正锁定前，重点确认周五 23:00 后餐厅是否还营业、周六陶瓷博物馆预约、周日下午返程票。</div><div class="hotel-card"><h3>交通与住宿</h3><div class="checklist"><label class="check-item"><input type="checkbox" data-check="train-out"><span>去程：周五 19:00 火车票已购，约 4 小时，23:00 多到达 <span class="tag good">已知</span></span></label><label class="check-item"><input type="checkbox" data-check="train-back"><span>回程：确认周日下午 16:00-17:00 之间的车次 <span class="tag must">必须</span></span></label><label class="check-item"><input type="checkbox" data-check="hotel"><span>确认景德镇假日酒店 2 晚订单、晚到入住和早餐时间 <span class="tag must">必须</span></span></label></div></div><div class="hotel-card"><h3>周六主线</h3><div class="checklist"><label class="check-item"><input type="checkbox" data-check="museum"><span>预约或确认中国陶瓷博物馆开放、入馆规则、讲解/导览 <span class="tag must">必须</span></span></label><label class="check-item"><input type="checkbox" data-check="lunch"><span>确认周六午饭：博物馆到御窑厂 / 陶阳里之间，优先江西菜或本地小馆</span></label><label class="check-item"><input type="checkbox" data-check="coffee"><span>确认周六咖啡：午后 15:30-16:30，放在老城或陶溪川步行段</span></label><label class="check-item"><input type="checkbox" data-check="dinner"><span>确认周六晚饭：陶溪川附近，饭后直接散步</span></label></div></div><div class="hotel-card"><h3>陶瓷购买</h3><div class="checklist"><label class="check-item"><input type="checkbox" data-check="ceramic-budget"><span>先定预算和用途：日用碗碟 / 茶器 / 摆件</span></label><label class="check-item"><input type="checkbox" data-check="shipping"><span>问清楚破损赔付、包装和快递；超过手提重量就直接发快递 <span class="tag must">必须</span></span></label></div></div><div class="hotel-card"><h3>交接摘要</h3><div class="copy-box" id="copyBox"></div><button class="small-btn" id="copyBtn" type="button">复制摘要</button></div></section>
-  </aside>
-
-  <main>
-    <div id="map"></div>
-    <div class="route-status warn" id="routeStatus">路线状态：正在加载高德底图。</div>
-    <div class="legend"><div class="legend-row"><span class="line-sample"></span><span>主推荐路线</span></div><div class="legend-row"><span class="line-sample alt"></span><span>备选/周日补充</span></div><div class="legend-row"><span class="dot"></span><span>可点击节点</span></div><div class="legend-row"><span class="pill level-a">A</span><span>必保留</span></div></div>
-    <div class="floating"><div class="summary-bar"><div class="stat"><div class="val">2晚3天</div><div class="lab">总行程</div></div><div class="stat"><div class="val">23:00+</div><div class="lab">周五抵达</div></div><div class="stat"><div class="val">16-17点</div><div class="lab">周日返程</div></div><div class="stat"><div class="val" id="progressText">0/9</div><div class="lab">待办进度</div></div></div><div class="map-tools"><button class="tool-btn active" id="btnRoad" type="button">路网</button><button class="tool-btn" id="btnSat" type="button">卫星</button><button class="tool-btn" id="btnFit" type="button">全览</button></div></div>
-    <section class="detail-panel active" id="detailPanel" aria-live="polite"></section>
-  </main>
-</div>
-<script>
-const itinerary={days:[{id:'d1',d:'D1',date:'周五',title:'上海到景德镇，晚到入住',km:'火车约4h',level:'D',energy:'safe',time:'19:00-23:30',hotel:'景德镇假日酒店',summary:'去程火车票已买，19:00 出发，约 4 小时，23:00 多到景德镇。抵达后只做入住和必要晚饭。',plan:['19:00 上海出发。','23:00 多到达景德镇，直接打车到景德镇假日酒店。','晚饭只选酒店附近或车站到酒店顺路的夜宵，不再进入陶溪川或老城。'],food:'周五夜宵策略：不追求名店。优先酒店附近仍营业的粉面、瓦罐汤、小炒或便利店补给；如果火车上能吃，到酒店后只买水和早餐。',coffee:'不安排咖啡。晚上到得太晚，咖啡会影响第二天状态。',ceramic:'不安排购买。晚上不开箱购物，避免疲劳下单。',detail:'这是恢复日。任何 23:00 后需要排队、绕路或等待的餐厅都不值得。'},{id:'d2',d:'D2',date:'周六',title:'陶瓷博物馆、704所、老城、陶溪川',km:'市内短转场',level:'A',energy:'watch',time:'09:30-21:00',hotel:'景德镇假日酒店',summary:'主推荐路线：上午中国陶瓷博物馆，中段加入 704 所，中午吃江西菜或本地小馆，下午御窑厂 / 陶阳里，15:30-16:30 插入咖啡，晚上陶溪川晚饭和散步。',plan:['09:30-11:40 中国陶瓷博物馆。先保留最有价值的文化主线。','12:00-13:00 704 所，作为这次必去的第二主轴。','13:10-14:10 午饭，选 704 所到老城之间的本地餐厅，避免绕回酒店。','14:20-16:00 御窑厂遗址 / 陶阳里。慢走老城，不做赶点。','16:00-17:00 咖啡休息，优先选陶阳里或陶溪川附近可拍照、可坐下的店。','17:15-19:30 陶溪川：先逛市集和店铺，再吃晚饭。','19:30-21:00 陶溪川散步，喝点东西后回酒店。'],food:'周六午饭：优先江西菜 / 景德镇家常菜 / 粉面小吃，位置放在 704 所到御窑厂 / 陶阳里之间。周六晚饭：放在陶溪川附近，吃完直接散步。避免晚饭后再跨城去三宝村。',coffee:'咖啡建议放在 15:30-16:30，承担恢复功能。优先陶阳里或陶溪川能坐下、环境有记忆点的独立咖啡馆；如果下午已经累，就把咖啡改成陶溪川晚饭前的一站。',ceramic:'陶瓷选购保持轻量：陶溪川适合买设计感和品牌化作品；御窑厂 / 陶阳里周边适合慢看小器物。日用碗碟优先看口沿、底足、釉面瑕疵、重量和是否能进洗碗机/微波炉。',detail:'这天不要再强行塞三宝村。三宝村放在周日更符合下午返程前的半日节奏。'},{id:'d3',d:'D3',date:'周日',title:'三宝村轻量补充，下午返沪',km:'市内+火车',level:'B',energy:'safe',time:'09:30-17:30',hotel:'无住宿',summary:'上午三宝村或补看老城，午饭后回酒店取行李，17:30 火车返沪。',plan:['09:30-11:30 三宝村轻量慢逛，重点是自然村落、陶艺空间和咖啡。','11:45-12:45 午饭，优先选三宝村或回酒店/车站方向顺路餐厅。','13:00-14:20 回酒店取行李，留出打车和车站缓冲。','17:30 返程，留足景德镇市内缓冲和临行前整理时间。'],food:'周日午饭不要排大餐，选择上菜稳定、离返程路线近的店。三宝村如果排队明显，直接回酒店/车站方向吃。',coffee:'周日上午可以安排一杯三宝村咖啡，作为轻量体验；如果周六已经喝过打卡咖啡，周日咖啡就降级为可选。',ceramic:'三宝村适合看工作室和手作氛围，但不建议周日买太多易碎品。真要买，优先让店家快递，不要手提上火车。',detail:'周日的硬约束是 17:30 返程。所有活动都要服从取行李和去车站的缓冲。'}],routes:[{id:'recommended',title:'推荐：博物馆 + 704所 + 老城 + 陶溪川',score:96,rest:80,culture:96,shopping:84,text:'最匹配你的偏好。文化主线最完整，704 所已经纳入必去，餐饮和咖啡都容易顺路插入，晚上陶溪川收尾舒服。三宝村放到周日上午，不挤压周六。'},{id:'relaxed',title:'轻松：704所 + 三宝村',score:82,rest:92,culture:84,shopping:76,text:'更松，但会牺牲老城完整度。适合你想把周末放慢、减少步行压力的时候。陶溪川晚饭仍保留。'},{id:'photo',title:'拍照：老城 + 三宝村',score:70,rest:76,culture:68,shopping:88,text:'拍照和买陶瓷更自由，但会牺牲中国陶瓷博物馆和 704 所的主线价值。除非临时不想看博物馆，否则不作为默认方案。'}],food:[{title:'周五 23:00 后晚饭',tag:'低风险',body:'只选酒店附近或车站到酒店顺路仍营业的粉面、汤、简餐、小炒。高分但要排队、离酒店远、需要等位的店全部跳过。'},{title:'周六午饭',tag:'江西菜/本地菜',body:'放在 704 所之后、去御窑厂 / 陶阳里之前。选择上菜稳定、评价稳定的本地餐厅，不为网红店牺牲下午节奏。'},{title:'周六咖啡',tag:'15:30-16:30',body:'推荐放在陶阳里或陶溪川附近。功能是恢复体力和打卡，不建议上午空腹咖啡，也不建议晚上喝。'},{title:'周六晚饭',tag:'陶溪川',body:'晚饭放在陶溪川附近。吃完直接散步、看市集和店铺，避免晚饭后再跨区转场。'},{title:'陶瓷购买',tag:'轻量选购',body:'只挑顺手、审美稳、可快递的器具。重点看釉面、口沿、底足、重量和包装，不做大采购。'}],spots:{station:{kicker:'交通节点',title:'景德镇站 / 景德镇北站',metrics:['D1 23:00+','打车入住','不加景点'],body:['周五 19:00 出发，约 4 小时后到达。到站后不要再为了吃饭绕路，优先酒店入住。','返程按周日 17:30 车次倒推，至少预留 90 分钟用于取行李、打车和进站。']},hotel:{kicker:'住宿锚点',title:'景德镇假日酒店',metrics:['2 晚','稳定优先','晚到友好'],body:['你已指定酒店锚点，因此所有餐饮和咖啡都按“从酒店出发、少折返”来排。','周五晚重点确认晚到入住；周六晚从陶溪川回酒店；周日午后回酒店取行李。']},museum:{kicker:'A级主线',title:'中国陶瓷博物馆',metrics:['D2 上午','2-2.5h','文化主线'],body:['放在周六上午最稳。它最符合你偏好的高质量博物馆/文化体验，也是景德镇第一次周末行程最值得保留的点。','看完之后不要立刻冲三宝村，先接 704 所，再吃午饭。']},site704:{kicker:'必去节点',title:'704 所',metrics:['D2 中段','1h','必去'],body:['既然你已确认必去，就把它放进周六主线，不再当成备选。','它适合作为陶瓷博物馆之后、老城之前的过渡段，文化主题连续性最好。']},oldtown:{kicker:'老城步行',title:'御窑厂 / 陶阳里',metrics:['D2 下午','1.5-2h','慢走'],body:['周六下午的核心是慢走，不是把御窑厂、陶阳里、老街全部刷满。','这里适合接午饭后散步，也适合在 15:30 前后插入咖啡。']},coffee:{kicker:'咖啡打卡',title:'陶阳里 / 陶溪川咖啡时间',metrics:['15:30-16:30','恢复体力','可拍照'],body:['咖啡应该服务行程，而不是打断行程。最佳位置是周六下午老城走完之后、陶溪川晚饭之前。','选店原则：能坐下、空间有特色、离下一站近。不要为远距离网红店牺牲动线。']},taoxichuan:{kicker:'夜间收尾',title:'陶溪川',metrics:['D2 晚上','晚饭+散步','买陶瓷'],body:['陶溪川适合做周六收尾：晚饭、咖啡/小酒、市集、设计类陶瓷店都集中，晚上回酒店也更自然。','如果要买日用器，优先在这里看审美稳定、包装和快递更可靠的店。']},sanbao:{kicker:'周日补充',title:'三宝国际陶艺村',metrics:['D3 上午','轻量慢逛','不拖到下午'],body:['三宝村放周日上午更合理：它有独特体验和咖啡，但不适合塞进周六主线后半段。','周日只留半天，所以三宝村最多安排到午饭前后，不能影响 17:30 返程。']},food:{kicker:'餐饮策略',title:'三顿关键饭',metrics:['周五夜宵','周六午饭','周六晚饭'],body:['周五晚：酒店附近低风险。周六午：704 所之后到老城之间。周六晚：陶溪川附近。','餐饮原则是顺路、稳定、能坐下，不为了名气牺牲休息和动线。']}}};
-const storage={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},remove:k=>{try{localStorage.removeItem(k)}catch(e){}}};
-const tabs=document.querySelectorAll('.tab'),panels=document.querySelectorAll('.panel');tabs.forEach(tab=>tab.addEventListener('click',()=>{tabs.forEach(i=>i.classList.toggle('active',i===tab));panels.forEach(p=>p.classList.toggle('active',p.id===tab.dataset.tab))}));
-const daysPanel=document.getElementById('days'),routeCards=document.getElementById('routeCards'),foodCards=document.getElementById('foodCards'),detailPanel=document.getElementById('detailPanel'),routeStatus=document.getElementById('routeStatus'),copyBox=document.getElementById('copyBox');
-let activeDay=storage.get('activeDay')||'d2',activeRoute=storage.get('activeRoute')||'recommended',currentSpot=null;
-function levelClass(l){return{A:'level-a',B:'level-b',C:'level-c',D:''}[l]||''}
-function energyClass(e){return e==='safe'?'safe':'watch'}
-function renderDays(){daysPanel.innerHTML='<h2 class="section-title">每日行程</h2>'+itinerary.days.map(day=>`<button class="day-card ${day.id===activeDay?'active':''}" type="button" data-day="${day.id}"><div class="day-top"><span class="day-no">${day.d}</span><span class="date">${day.date} · ${day.time}</span></div><div class="route-title">${day.title}</div><div class="meta"><span class="pill ${levelClass(day.level)}">${day.level||'D'}级</span><span class="pill ${energyClass(day.energy)}">${day.energy==='safe'?'轻松':'需控节奏'}</span><span class="pill">${day.km}</span></div><div class="small">${day.summary}</div></button>`).join('');document.querySelectorAll('[data-day]').forEach(btn=>btn.addEventListener('click',()=>selectDay(btn.dataset.day)))}
-function renderRoutes(){routeCards.innerHTML=itinerary.routes.map(route=>`<button class="compare-card ${route.id===activeRoute?'active':''}" type="button" data-route="${route.id}"><h3>${route.title}</h3><div class="score"><span>综合匹配</span><div class="bar"><span style="width:${route.score}%"></span></div></div><div class="score"><span>休息友好</span><div class="bar warn"><span style="width:${route.rest}%"></span></div></div><div class="score"><span>文化价值</span><div class="bar"><span style="width:${route.culture}%"></span></div></div><div class="score"><span>选购便利</span><div class="bar"><span style="width:${route.shopping}%"></span></div></div><ul class="clean"><li>${route.text}</li></ul></button>`).join('');document.querySelectorAll('[data-route]').forEach(btn=>btn.addEventListener('click',()=>selectRoute(btn.dataset.route)))}
-function renderFood(){foodCards.innerHTML=itinerary.food.map(item=>`<div class="hotel-card"><h3>${item.title} <span class="tag ${item.tag.includes('低风险')?'good':item.tag.includes('15')?'warn':''}">${item.tag}</span></h3><ul class="clean"><li>${item.body}</li></ul></div>`).join('')}
-function renderDetailForDay(day){detailPanel.innerHTML=`<div class="detail-head"><div class="detail-kicker">${day.d} · ${day.date}</div><h2 class="detail-title">${day.title}</h2><p class="subtitle">${day.summary}</p></div><div class="detail-body"><div class="detail-metrics"><div class="detail-metric"><span>时间</span><strong>${day.time}</strong></div><div class="detail-metric"><span>强度</span><strong>${day.level}级 / ${day.energy==='safe'?'轻松':'控节奏'}</strong></div><div class="detail-metric"><span>住宿</span><strong>${day.hotel}</strong></div></div><div class="detail-section"><h3>执行安排</h3>${day.plan.map(i=>`<p>${i}</p>`).join('')}</div><div class="detail-section"><h3>餐饮安排</h3><p>${day.food}</p></div><div class="detail-section"><h3>咖啡安排</h3><p>${day.coffee}</p></div><div class="detail-section"><h3>陶瓷选购</h3><p>${day.ceramic}</p></div><div class="detail-section"><h3>判断</h3><p>${day.detail}</p></div></div>`}
-function renderDetailForSpot(id){const spot=itinerary.spots[id];if(!spot)return;detailPanel.innerHTML=`<div class="detail-head"><div class="detail-kicker">${spot.kicker}</div><h2 class="detail-title">${spot.title}</h2></div><div class="detail-body"><div class="detail-metrics">${spot.metrics.map((m,i)=>`<div class="detail-metric"><span>${['定位','节奏','作用'][i]}</span><strong>${m}</strong></div>`).join('')}</div><div class="detail-section"><h3>安排说明</h3>${spot.body.map(i=>`<p>${i}</p>`).join('')}</div></div>`}
-function selectDay(id){activeDay=id;storage.set('activeDay',id);renderDays();document.querySelectorAll('.pin-marker').forEach(m=>m.classList.toggle('active',m.dataset.spot===id));const day=itinerary.days.find(i=>i.id===id);renderDetailForDay(day);routeStatus.className='route-status warn';routeStatus.textContent=`当前查看：${day.d} ${day.title}。`}
-function selectRoute(id){activeRoute=id;storage.set('activeRoute',id);renderRoutes();const route=itinerary.routes.find(i=>i.id===id);routeStatus.className='route-status ok';routeStatus.textContent=`当前路线方案：${route.title}。${route.text}`;updateCopyBox()}
-function selectSpot(id){currentSpot=id;const spot=itinerary.spots[id];if(!spot)return;renderDetailForSpot(id);routeStatus.className='route-status ok';routeStatus.textContent=`当前节点：${spot.title}。`}
-function updateProgress(){const checks=[...document.querySelectorAll('[data-check]')],done=checks.filter(i=>i.checked).length;document.getElementById('progressText').textContent=`${done}/${checks.length}`;storage.set('jdzChecks',JSON.stringify(Object.fromEntries(checks.map(i=>[i.dataset.check,i.checked]))))}
-function updateCopyBox(){const route=itinerary.routes.find(i=>i.id===activeRoute);copyBox.textContent=`景德镇周末路书：周五 19:00 从上海坐火车出发，约 4 小时，23:00 多到达景德镇，入住景德镇假日酒店。周六推荐方案为“${route.title}”：上午中国陶瓷博物馆，中午在博物馆到老城之间吃江西菜/本地菜，下午御窑厂/陶阳里，15:30-16:30 安排可打卡咖啡，晚上陶溪川晚饭和散步。周日上午三宝村轻量补充或补看老城，午饭后回酒店取行李，周日下午 16:00-17:00 火车返沪。整体原则：舒适优先、少折返、不把周末做成赶点任务。`}
-function restoreChecks(){let saved={};try{saved=JSON.parse(storage.get('jdzChecks')||'{}')}catch(e){}document.querySelectorAll('[data-check]').forEach(input=>{input.checked=Boolean(saved[input.dataset.check]);input.addEventListener('change',updateProgress)});updateProgress()}
-const map=L.map('map',{center:[29.305,117.22],zoom:13,zoomControl:false,preferCanvas:true});
-const gaodeRoad=L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'高德地图'});
-const gaodeSat=L.layerGroup([L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'高德地图'}),L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18})]);
-gaodeRoad.addTo(map);
-L.control.zoom({position:'bottomright'}).addTo(map);
-const points={station:[29.3037,117.2088],hotel:[29.3032,117.2156],museum:[29.2876,117.2124],site704:[29.291,117.2148],oldtown:[29.2921,117.2136],coffee:[29.2928,117.2208],taoxichuan:[29.2967,117.2287],sanbao:[29.3378,117.2248],food:[29.2947,117.2189]};
-const routePath=[points.station,points.hotel,points.museum,points.site704,points.oldtown,points.coffee,points.taoxichuan,points.food,points.sanbao];
-const mainLine=L.polyline(routePath,{color:'#b85c38',weight:4,opacity:.82,smoothFactor:1.2}).addTo(map);
-const altLine=L.polyline([points.oldtown,points.sanbao],{color:'#2f6788',weight:3,opacity:.45,dashArray:'8 8',smoothFactor:1.2}).addTo(map);
-const routeLabels=[{p:points.station,t:'D1 抵达',c:'#b85c38'},{p:points.museum,t:'D2 上午',c:'#b85c38'},{p:points.site704,t:'704 所',c:'#b85c38'},{p:points.taoxichuan,t:'D2 晚上',c:'#b85c38'},{p:points.sanbao,t:'D3 上午',c:'#2f6788'}];
-routeLabels.forEach(item=>L.marker(item.p,{interactive:false,icon:L.divIcon({className:'route-km-label',html:`<span style="background:${item.c}">${item.t}</span>`,iconSize:[1,1],iconAnchor:[0,0]})}).addTo(map));
-const markerMeta=[['station','景德镇站 / 北站','D1 23:00+'],['hotel','景德镇假日酒店','2 晚落点'],['museum','中国陶瓷博物馆','D2 上午'],['oldtown','御窑厂 / 陶阳里','D2 下午'],['coffee','可打卡咖啡','15:30 插入'],['taoxichuan','陶溪川','晚饭+散步'],['sanbao','三宝村','D3 上午'],['food','餐饮锚点','夜宵/午晚饭']];
-markerMeta.forEach(([id,title,sub])=>{const marker=L.circleMarker(points[id],{radius:8,color:'#fff',weight:2,fillColor:id==='hotel'?'#2f765f':id==='sanbao'?'#2f6788':'#b75c39',fillOpacity:.96}).addTo(map);marker.bindTooltip(title,{permanent:true,direction:'top',offset:[0,-11],className:'day-label'});marker.on('click',()=>selectSpot(id));marker._id=id;marker._icon&&marker._icon.classList.add('pin-marker');});
-map.on('dragstart',()=>{routeStatus.className='route-status warn';routeStatus.textContent='地图可拖动，正在查看景德镇底图。'});
-map.on('zoomend',()=>{routeStatus.className='route-status warn';routeStatus.textContent='地图已更新缩放。';});
-function fitAll(){map.fitBounds(mainLine.getBounds(),{padding:[30,30]})}
-fitAll();
-renderDays();renderRoutes();renderFood();restoreChecks();selectDay(activeDay);selectRoute(activeRoute);updateCopyBox();
-document.getElementById('btnRoad').addEventListener('click',()=>{map.removeLayer(gaodeSat);gaodeRoad.addTo(map);document.getElementById('btnRoad').classList.add('active');document.getElementById('btnSat').classList.remove('active');routeStatus.className='route-status ok';routeStatus.textContent='高德路网已加载。'});
-document.getElementById('btnSat').addEventListener('click',()=>{map.removeLayer(gaodeRoad);gaodeSat.addTo(map);document.getElementById('btnSat').classList.add('active');document.getElementById('btnRoad').classList.remove('active');routeStatus.className='route-status ok';routeStatus.textContent='高德卫星已加载。'});
-document.getElementById('btnFit').addEventListener('click',fitAll);
-document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(copyBox.textContent);routeStatus.className='route-status ok';routeStatus.textContent='交接摘要已复制。'}catch(e){routeStatus.className='route-status warn';routeStatus.textContent='复制失败，请手动选中摘要复制。'}});
-</script>
+  <script src="./assets/data/route-data.js"></script>
+  <script src="./assets/data/itinerary.js"></script>
+  <script src="./assets/js/app.js"></script>
 </body>
 </html>
